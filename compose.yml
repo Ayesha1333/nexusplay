@@ -6,14 +6,15 @@ services:
     image: gaming-app:latest
     container_name: gaming-app
     ports:
-      - "5000:5000"
+      # Host port 8080 → Container port 8080
+      - "8080:8080"
     environment:
-      - PORT=5000
+      - PORT=8080
       - SECRET_KEY=change-this-to-a-random-secret-key-in-production
       - FLASK_ENV=production
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 3
