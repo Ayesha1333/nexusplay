@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port Flask uses
-EXPOSE 5000
+EXPOSE 6000
 
 # Default command (overridden by docker-compose)
 CMD ["python", "app.py"]
