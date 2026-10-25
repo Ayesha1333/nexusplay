@@ -1,15 +1,16 @@
-FROM python:3.14-slim as build
-WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends gcc build-essential && rm -rf /var/lib/apt/lists/*
-RUN python -m venv /opt/venv
-ENV path= "/opt/venv/bin:$PATH"
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+FROM python:3.11-slim
 
-FROM python:3.14-slim as production
 WORKDIR /app
-RUN groupadd --system appgroup && useradd --system --gid appgroup appuser
-COPY --from=build /opt/venv /opt/venv/
-COPY --chown=appuser:appgroup . .
-USER appuser
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the app
+COPY . .
+
+# Expose the port Flask uses
+EXPOSE 5000
+
+# Default command (overridden by docker-compose)
 CMD ["python", "app.py"]
