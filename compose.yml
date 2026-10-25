@@ -1,19 +1,26 @@
-version: '3.8'
-
 services:
-  nexusplay-app:
-    build: 
+  gaming-app:
+    build:
       context: .
       dockerfile: Dockerfile
-    container_name: nexusplay-dev
-    restart: unless-stopped
+    image: gaming-app:latest
+    container_name: gaming-app
     ports:
-      - "6000:6000"
+      - "5000:5000"
     environment:
-      - FLASK_ENV=development
-      - FLASK_DEBUG=1
-    volumes:
-      # Mount the current directory so local changes reflect instantly
-      - .:/app
-    # Command to run with Flask's built-in dev server (has hot-reload)
-    command: python app.py
+      - PORT=5000
+      - SECRET_KEY=change-this-to-a-random-secret-key-in-production
+      - FLASK_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - gaming-network
+
+networks:
+  gaming-network:
+    driver: bridge
