@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  nexusplay-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: nexusplay-dev
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    volumes:
+      # Mount the current directory so local changes reflect instantly
+      - .:/app
+    # Command to run with Flask's built-in dev server (has hot-reload)
+    command: python app.py
