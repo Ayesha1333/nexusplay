@@ -5,7 +5,7 @@ services:
            deploy:
              replicas: 1
            ports:
-             - "5000:5000"
+             - "7000:7000"
            networks:
              - mynetwork
 networks:
